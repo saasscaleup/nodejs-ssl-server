@@ -240,7 +240,7 @@ sudo certbot renew --dry-run
   Enjoy Your free Nodejs server with Free SSL :)
   
   
-## Support
+## Support 🙏😃
   
  If you Like the tutorial and you want to support my channel so I will keep releasing amzing content that will turn you to a desirable Developer with Amazing Cloud skills... I will realy appricite if you:
  

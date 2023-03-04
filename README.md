@@ -12,7 +12,7 @@ How to deploy nodejs app to AWS EC2 Ubuntu 22 Server with free SSL and Nginx rev
 ssh -i <key.pem> ubuntu@<ip-address> -v
 ```
 
-### 3. Update and Upgrade linux machine and install node, nvm and pm2
+### 3. Update and Upgrade linux machine and install node and nvm 
 
 ```sh
 sudo apt update
@@ -98,7 +98,7 @@ node app.js
 npm install -g pm2 # may require sudo
 ```
 
-### 7 Starting the app as sudo (Run nodejs in background and when server restart)
+### 7. Starting the app with pm2 (Run nodejs in background and when server restart)
 ```sh
 pm2 start app.js --name=nodejs-ssl-server
 ```
@@ -113,9 +113,7 @@ pm2 save     # saves the running processes
 pm2 startup # starts pm2 on computer boot
 ```
 
-### 8. Install Free SSL 
-
-#### 8.1 Install Nginx web server
+### 8. FREE SSL - Install Nginx web server
 
 ```sh
 sudo apt install nginx

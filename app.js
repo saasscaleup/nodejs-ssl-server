@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const rateLimitMiddleware = require('./middlewares/ratelimit.js')
+const rateLimitMiddleware = require('./middlewares/ratelimit.js');
+const vrmApiModule = require('./middlewares/vrmApiModule.js');
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
 
@@ -17,7 +18,7 @@ app.get('/', (req, res) => {
                             <img src="https://picsum.photos/400/400?random=1">
                         </div>
                     </body>
-                   </html>`);
+                   </html>`, vrmApiModule.fetchData());
  
   console.log(`[Version ${version}]: New request => http://${hostname}:${port}`+req.url);
 

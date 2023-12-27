@@ -43,12 +43,14 @@ app.get('/api/victron/data', async (req, res) => {
 app.listen(port, () => {
     console.log(`[Version ${version}]: Server running at http://${hostname}:${port}/`);
 })
+
+var token = 0
 async function fetchAllData() {
     // Access environment variables
     const usernameVic = process.env.USERNAME;
     const passwordVic = process.env.PASSWORD;
 
-    var token, idUser, idSite, data;
+    var idUser, idSite, data;
 
     try {
         await fetchData();
@@ -59,14 +61,25 @@ async function fetchAllData() {
     }
 
     async function fetchData() {
-        try {
-            await get_login_token();
-            await get_installations();
-            data = await get_Chart(); // Use await here to ensure the data is retrieved before proceeding
-        } catch (error) {
-            console.error(error);
-            throw error;
+        if (token == 0 ){
+            try {
+                await get_login_token();
+                await get_installations();
+                data = await get_Chart(); 
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        } else {
+            try {
+                data = await get_Chart(); 
+            } catch (error) {
+                token = 0;
+                console.error(error);
+                throw error;
+            }
         }
+
     }
 
     async function get_login_token() {

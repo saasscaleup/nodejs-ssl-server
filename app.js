@@ -2,13 +2,16 @@ import express from 'express';
 import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
 
-app.use(rateLimitMiddleware)
+app.use(rateLimitMiddleware);
+
+app.use(cors());
 
 const version = '1.0.0';
 

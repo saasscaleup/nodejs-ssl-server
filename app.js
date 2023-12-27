@@ -44,13 +44,13 @@ app.listen(port, () => {
     console.log(`[Version ${version}]: Server running at http://${hostname}:${port}/`);
 })
 
-var token = 0
+var token, idUser, idSite;
 async function fetchAllData() {
     // Access environment variables
     const usernameVic = process.env.USERNAME;
     const passwordVic = process.env.PASSWORD;
 
-    var idUser, idSite, data;
+    var data;
 
     try {
         await fetchData();
@@ -61,7 +61,7 @@ async function fetchAllData() {
     }
 
     async function fetchData() {
-        if (token == 0 ){
+        if (token == null ){
             try {
                 await get_login_token();
                 await get_installations();

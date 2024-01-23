@@ -42,14 +42,20 @@ app.get('/api/victron/data', async (req, res) => {
 });
 
 app.post('/api/generator/data', async (req, res) => {
-    const { status } = req.body;
-
     try {
-        // Your logic to handle the status and update the global variable
-        // For example, you can store the status in a database, etc.
-        console.log("Received status:", status);
-        globalGeneratorStatus = status;
-        res.json({ message: "Status received and stored successfully." });
+        // Ensure req.body is defined and has a 'status' property
+        const { status } = req.body || {};
+
+        if (status !== undefined) {
+            // Your logic to handle the status and update the global variable
+            // For example, you can store the status in a database, etc.
+            console.log("Received status:", status);
+            globalGeneratorStatus = status;
+            res.json({ message: "Status received and stored successfully." });
+        } else {
+            // Invalid or missing 'status' property in the request body
+            res.status(400).json({ error: 'Invalid or missing status in the request body.' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

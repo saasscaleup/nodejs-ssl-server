@@ -41,36 +41,21 @@ app.get('/api/victron/data', async (req, res) => {
     }
 });
 
-app.post('/api/generator/data', async (req, res) => {
-    try {
-        const { status } = req.body || {};
-
-        if (status !== undefined) {
-            // Your logic to handle the status and update the global variable
-            console.log("Received status:", status);
-            globalGeneratorStatus = status;
-            res.json({ message: "Status received and stored successfully." });
-        } else {
-            // Send a more generic error response for any missing or invalid payload
-            res.status(400).json({ error: 'Invalid or missing status in the request body.' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-
-// New route for the GET request to retrieve the stored status
+// Modify the route for the GET request
 app.get('/api/generator/status', (req, res) => {
     try {
+        // Extract the 'message' parameter from the query string
+        const message = req.query.message || "No message received";
+        console.log("Received message:", message);
+
         // Your logic to provide the stored status
-        res.json({ status: globalGeneratorStatus });
+        res.json({ status: globalGeneratorStatus, message });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 app.listen(port, () => {
     console.log(`[Version ${version}]: Server running at http://${hostname}:${port}/`);

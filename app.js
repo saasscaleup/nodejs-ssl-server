@@ -8,9 +8,8 @@ dotenv.config();
 const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
-let globalGeneratorStatus = null;
-let globalVoltage = 50.0;
-let globalStartStatus = false;
+let globalGeneratorRunning = false;
+let globalRequestToRun = false;
 
 app.use(rateLimitMiddleware);
 
@@ -45,30 +44,26 @@ app.get('/api/victron/data', async (req, res) => {
 
 app.get('/api/generator/status', (req, res) => {
     try {
-        // Your logic to provide the stored status
-        res.json({ voltage: globalVoltage, start_status: globalStartStatus });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+        // Extract the 'message' parameter from the query string
+        const message = req.query.message;
 
+        // Parse the JSON string to get the variables
+        const { generatorRunning, requestToRun } = JSON.parse(message);
 
-app.post('/api/generator/status', (req, res) => {
-    try {
-        // Assuming the request body contains a JSON object with "voltage" and "start_status" properties
-        const { voltage, start_status } = req.body;
-
-        // Validate the received data, adjust validation as needed
-        if (typeof voltage !== 'number' || typeof start_status !== 'boolean') {
-            return res.status(400).json({ error: 'Invalid data format' });
+        // Assign the values to global variables
+        if (globalGeneratorRunning !== undefined){
+            globalGeneratorRunning = generatorRunning;
+        }
+        if(globalRequestToRun !== undefined){
+            globalRequestToRun = requestToRun;
         }
 
-        // Set the global variables
-        globalVoltage = voltage;
-        globalStartStatus = start_status;
+        console.log("Received message:", message);
+        console.log("generatorRunning:", globalGeneratorRunning);
+        console.log("requestToRun:", globalRequestToRun);
 
-        res.json({ success: true, message: 'Variables set successfully' });
+        // Your logic to provide the stored status
+        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, message });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

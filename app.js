@@ -9,6 +9,8 @@ const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
 let globalGeneratorStatus = null;
+let globalVoltage = 50.0;
+let globalStartStatus = false;
 
 app.use(rateLimitMiddleware);
 
@@ -41,20 +43,38 @@ app.get('/api/victron/data', async (req, res) => {
     }
 });
 
-// Modify the route for the GET request
 app.get('/api/generator/status', (req, res) => {
     try {
-        // Extract the 'message' parameter from the query string
-        const message = req.query.message || "No message received";
-        console.log("Received message:", message);
-
         // Your logic to provide the stored status
-        res.json({ status: globalGeneratorStatus, message });
+        res.json({ voltage: globalVoltage, start_status: globalStartStatus });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+app.post('/api/generator/status', (req, res) => {
+    try {
+        // Assuming the request body contains a JSON object with "voltage" and "start_status" properties
+        const { voltage, start_status } = req.body;
+
+        // Validate the received data, adjust validation as needed
+        if (typeof voltage !== 'number' || typeof start_status !== 'boolean') {
+            return res.status(400).json({ error: 'Invalid data format' });
+        }
+
+        // Set the global variables
+        globalVoltage = voltage;
+        globalStartStatus = start_status;
+
+        res.json({ success: true, message: 'Variables set successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 
 app.listen(port, () => {

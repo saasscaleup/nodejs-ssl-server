@@ -50,8 +50,6 @@ app.get('/api/generator/status', async (req, res) => {
         // Parse the JSON string to get the variables
         const { generatorRunning, requestToRun } = JSON.parse(message);
 
-        console.log("gen" + generatorRunning + '-', "req" + requestToRun + '-')
-
         // Assign the values to global variables
         if (generatorRunning !== ''){
             globalGeneratorRunning = generatorRunning;
@@ -60,9 +58,8 @@ app.get('/api/generator/status', async (req, res) => {
             globalRequestToRun = requestToRun;
         }
 
-        console.log("Received message:", message);
-        console.log("generatorRunning:", globalGeneratorRunning);
-        console.log("requestToRun:", globalRequestToRun);
+        console.log("\ngeneratorRunning:", globalGeneratorRunning);
+        console.log("requestToRun:", globalRequestToRun, "\n");
 
         // Your logic to provide the stored status
         res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun});

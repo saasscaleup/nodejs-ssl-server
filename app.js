@@ -63,7 +63,7 @@ app.get('/api/generator/status', async (req, res) => {
         console.log("requestToRun:", globalRequestToRun);
 
         // Your logic to provide the stored status
-        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, message });
+        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

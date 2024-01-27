@@ -42,7 +42,7 @@ app.get('/api/victron/data', async (req, res) => {
     }
 });
 
-app.get('/api/generator/status', (req, res) => {
+app.get('/api/generator/status', async (req, res) => {
     try {
         // Extract the 'message' parameter from the query string
         const message = req.query.message;
@@ -51,10 +51,10 @@ app.get('/api/generator/status', (req, res) => {
         const { generatorRunning, requestToRun } = JSON.parse(message);
 
         // Assign the values to global variables
-        if (globalGeneratorRunning !== undefined){
+        if (globalGeneratorRunning !== ''){
             globalGeneratorRunning = generatorRunning;
         }
-        if(globalRequestToRun !== undefined){
+        if(globalRequestToRun !== ''){
             globalRequestToRun = requestToRun;
         }
 

@@ -51,10 +51,10 @@ app.get('/api/generator/status', async (req, res) => {
         const { generatorRunning, requestToRun } = JSON.parse(message);
 
         // Assign the values to global variables
-        if (globalGeneratorRunning !== ''){
+        if (generatorRunning !== ''){
             globalGeneratorRunning = generatorRunning;
         }
-        if(globalRequestToRun !== ''){
+        if(requestToRun !== ''){
             globalRequestToRun = requestToRun;
         }
 

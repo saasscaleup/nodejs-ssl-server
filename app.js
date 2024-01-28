@@ -12,22 +12,24 @@ const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
 const filePath = 'settings.json';
+const version = '1.5.0';
 var globalGeneratorRunning = false;
 var globalRequestToRun = false;
 var globalErrorState = false;
 var globalSettings
 
+
+const corsOptions = {
+    origin: '*', // Allow requests from any origin (you can specify your frontend's origin here)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204,
+    credentials: true,
+    allowedHeaders: 'Content-Type',
+  };
+  
+app.use(cors(corsOptions));
+
 app.use(rateLimitMiddleware);
-
-// Enable CORS for all routes
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow specified HTTP methods
-    res.header('Access-Control-Allow-Headers', 'Content-Type'); // Allow specified headers
-    next();
-});
-
-const version = '1.5.0';
 
 app.get('/', (req, res) => {
     // set response content    

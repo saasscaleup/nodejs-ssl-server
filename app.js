@@ -10,6 +10,7 @@ const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
 let globalGeneratorRunning = false;
 let globalRequestToRun = false;
+let globalErrorState = false;
 
 app.use(rateLimitMiddleware);
 
@@ -48,7 +49,7 @@ app.get('/api/generator/status', async (req, res) => {
         const message = req.query.message;
 
         // Parse the JSON string to get the variables
-        const { generatorRunning, requestToRun } = JSON.parse(message);
+        const { generatorRunning, requestToRun, errorState } = JSON.parse(message);
 
         // Assign the values to global variables
         if (generatorRunning !== ''){
@@ -57,12 +58,16 @@ app.get('/api/generator/status', async (req, res) => {
         if(requestToRun !== ''){
             globalRequestToRun = requestToRun;
         }
+        if(errorState !== ''){
+            globalErrorState = errorState;
+        }
 
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
-        console.log("requestToRun:", globalRequestToRun, "\n");
+        console.log("requestToRun:", globalRequestToRun);
+        console.log("errorState:", globalErrorState, "\n");
 
         // Your logic to provide the stored status
-        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun});
+        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, errorState: globalErrorState});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

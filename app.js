@@ -19,9 +19,15 @@ var globalSettings
 
 app.use(rateLimitMiddleware);
 
-app.use(cors());
+// Enable CORS for all routes
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow specified HTTP methods
+    res.header('Access-Control-Allow-Headers', 'Content-Type'); // Allow specified headers
+    next();
+});
 
-const version = '1.1.0';
+const version = '1.5.0';
 
 app.get('/', (req, res) => {
     // set response content    

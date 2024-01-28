@@ -3,8 +3,9 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import * as fs from 'fs';
 
-const fs = require('fs');
+
 
 dotenv.config();
 

@@ -5,8 +5,6 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import * as fs from 'fs';
 
-
-
 dotenv.config();
 
 const app = express();

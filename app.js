@@ -3,14 +3,19 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+
+const fs = require('fs');
+
 dotenv.config();
 
 const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
-let globalGeneratorRunning = false;
-let globalRequestToRun = false;
-let globalErrorState = false;
+const filePath = 'settings.json';
+var globalGeneratorRunning = false;
+var globalRequestToRun = false;
+var globalErrorState = false;
+var globalSettings
 
 app.use(rateLimitMiddleware);
 
@@ -43,13 +48,13 @@ app.get('/api/victron/data', async (req, res) => {
     }
 });
 
-app.get('/api/generator/status', async (req, res) => {
+app.get('/api/status', async (req, res) => {
     try {
         // Extract the 'message' parameter from the query string
         const message = req.query.message;
 
         // Parse the JSON string to get the variables
-        const { generatorRunning, requestToRun, errorState } = JSON.parse(message);
+        const { generatorRunning, requestToRun, errorState, settings } = JSON.parse(message);
 
         // Assign the values to global variables
         if (generatorRunning !== ''){
@@ -61,13 +66,24 @@ app.get('/api/generator/status', async (req, res) => {
         if(errorState !== ''){
             globalErrorState = errorState;
         }
-
+        if(settings != null){
+            writeSettingsToFile(settings)
+        }
+        globalSettings = 
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
         console.log("errorState:", globalErrorState, "\n");
 
+        // Example usage to set globalSettings
+        readSettingsFromFile((err, settings) => {
+            if (!err) {
+            globalSettings = settings;
+            console.log('Read settings from file and set globalSettings:', globalSettings);
+            }
+        });
+
         // Your logic to provide the stored status
-        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, errorState: globalErrorState});
+        res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, errorState: globalErrorState, settings: globalSettings});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -235,4 +251,36 @@ async function fetchAllData() {
         }
     }
     
+}
+
+
+// Function to write settings to the file
+function writeSettingsToFile(settings) {
+  const jsonString = JSON.stringify(settings, null, 2);
+
+  fs.writeFile(filePath, jsonString, 'utf-8', (err) => {
+    if (err) {
+      console.error('Error writing to file:', err);
+    } else {
+      console.log('Settings written to file successfully.');
+    }
+  });
+}
+
+// Function to read settings from the file
+function readSettingsFromFile(callback) {
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      callback(err, null);
+    } else {
+      try {
+        const settings = JSON.parse(data);
+        callback(null, settings);
+      } catch (parseError) {
+        console.error('Error parsing JSON:', parseError);
+        callback(parseError, null);
+      }
+    }
+  });
 }

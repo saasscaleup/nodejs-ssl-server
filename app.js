@@ -75,14 +75,23 @@ app.get('/api/status', async (req, res) => {
         }
         if(settings != null){
             console.log('writing file')
-            writeSettingsToFile(settings);
+            
         }
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
         console.log("errorState:", globalErrorState, "\n");
 
         // Example usage to set globalSettings
-        globalSettings = await readSettingsFromFile();
+
+        fs.readFile("./settings.json", function(err, data) { 
+     
+            // Check for errors 
+            if (err) throw err; 
+         
+            // Converting to JSON 
+            const users = JSON.parse(data); 
+            console.log(users); // Print users 
+        });
 
 
         // Your logic to provide the stored status
@@ -255,29 +264,3 @@ async function fetchAllData() {
     }
     
 }
-
-async function readSettingsFromFile() {
-    try {
-      const globalSettings = await fs.readFile('./settings.json', 'utf-8');
-      const settings = JSON.parse(globalSettings);
-      console.log(settings);
-      return settings;
-    } catch (error) {
-      console.error('Error reading or parsing JSON file:', error);
-      throw error;
-    }
-  }
-  async function writeSettingsToFile(settings) {
-    try {
-      const filePath = './settings.json';
-      const jsonString = JSON.stringify(settings, null, 2);
-  
-      // Use encoding directly as the third argument
-      await fs.writeFile(filePath, jsonString, { encoding: 'utf-8' });
-  
-      console.log('Settings successfully written to file.');
-    } catch (error) {
-      console.error('Error writing to JSON file:', error);
-      throw error;
-    }
-  }

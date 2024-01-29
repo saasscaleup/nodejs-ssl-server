@@ -270,8 +270,11 @@ async function readSettingsFromFile() {
   async function writeSettingsToFile(settings) {
     try {
       const filePath = './settings.json';
-      const jsonString = JSON.stringify(settings, null, 2); // The third argument (2) is for indentation in the saved JSON file
-      await fs.writeFile(filePath, jsonString, 'utf-8');
+      const jsonString = JSON.stringify(settings, null, 2);
+  
+      // Use encoding directly as the third argument
+      await fs.writeFile(filePath, jsonString, { encoding: 'utf-8' });
+  
       console.log('Settings successfully written to file.');
     } catch (error) {
       console.error('Error writing to JSON file:', error);

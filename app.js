@@ -74,7 +74,8 @@ app.get('/api/status', async (req, res) => {
             globalErrorState = errorState;
         }
         if(settings != null){
-            writeSettingsToFile(settings)
+            console.log('writing file')
+            writeSettingsToFile(settings);
         }
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
@@ -263,6 +264,17 @@ async function readSettingsFromFile() {
       return settings;
     } catch (error) {
       console.error('Error reading or parsing JSON file:', error);
+      throw error;
+    }
+  }
+  async function writeSettingsToFile(settings) {
+    try {
+      const filePath = './settings.json';
+      const jsonString = JSON.stringify(settings, null, 2); // The third argument (2) is for indentation in the saved JSON file
+      await fs.writeFile(filePath, jsonString, 'utf-8');
+      console.log('Settings successfully written to file.');
+    } catch (error) {
+      console.error('Error writing to JSON file:', error);
       throw error;
     }
   }

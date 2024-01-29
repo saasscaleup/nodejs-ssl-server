@@ -73,26 +73,18 @@ app.get('/api/status', async (req, res) => {
         if(errorState !== ''){
             globalErrorState = errorState;
         }
-        if(settings != null){
+    
+        if(settings != {}){
             console.log('writing file')
             
         }
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
         console.log("errorState:", globalErrorState, "\n");
+        console.log('settings', settings)
 
-        // Example usage to set globalSettings
-
-        fs.readFile("./settings.json", function(err, data) { 
-     
-            // Check for errors 
-            if (err) throw err; 
-         
-            // Converting to JSON 
-            const users = JSON.parse(data); 
-            console.log(users); // Print users 
-        });
-
+        let read_file_func = await read_file()
+        console.log(read_file_func)
 
         // Your logic to provide the stored status
         res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, errorState: globalErrorState, settings: globalSettings});
@@ -264,3 +256,14 @@ async function fetchAllData() {
     }
     
 }
+async function read_file(){
+    fs.readFile("./settings.json", function(err, data) { 
+     
+        // Check for errors 
+        if (err) throw err; 
+     
+        // Converting to JSON 
+        const userData = JSON.parse(data); 
+        console.log(userData); // Print users 
+    });
+}       

@@ -253,4 +253,3 @@ async function fetchAllData() {
     }
     
 }
-const fileName = './settings.txt'

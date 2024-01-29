@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
-const filePath = 'settings.json';
+const filePath = './settings.json';
 const version = '1.5.0';
 var globalGeneratorRunning = false;
 var globalRequestToRun = false;
@@ -76,18 +76,13 @@ app.get('/api/status', async (req, res) => {
         if(settings != null){
             writeSettingsToFile(settings)
         }
-        globalSettings = 
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
         console.log("errorState:", globalErrorState, "\n");
 
         // Example usage to set globalSettings
-        readSettingsFromFile((err, settings) => {
-            if (!err) {
-            globalSettings = settings;
-            console.log('Read settings from file and set globalSettings:', globalSettings);
-            }
-        });
+        globalSettings = await readSettingsFromFile();
+
 
         // Your logic to provide the stored status
         res.json({ generatorRunning: globalGeneratorRunning, requestToRun: globalRequestToRun, errorState: globalErrorState, settings: globalSettings});
@@ -260,34 +255,14 @@ async function fetchAllData() {
     
 }
 
-
-// Function to write settings to the file
-function writeSettingsToFile(settings) {
-  const jsonString = JSON.stringify(settings, null, 2);
-
-  fs.writeFile(filePath, jsonString, 'utf-8', (err) => {
-    if (err) {
-      console.error('Error writing to file:', err);
-    } else {
-      console.log('Settings written to file successfully.');
+async function readSettingsFromFile() {
+    try {
+      const globalSettings = await fs.readFile('./settings.json', 'utf-8');
+      const settings = JSON.parse(globalSettings);
+      console.log(settings);
+      return settings;
+    } catch (error) {
+      console.error('Error reading or parsing JSON file:', error);
+      throw error;
     }
-  });
-}
-
-// Function to read settings from the file
-function readSettingsFromFile(callback) {
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      callback(err, null);
-    } else {
-      try {
-        const settings = JSON.parse(data);
-        callback(null, settings);
-      } catch (parseError) {
-        console.error('Error parsing JSON:', parseError);
-        callback(parseError, null);
-      }
-    }
-  });
-}
+  }

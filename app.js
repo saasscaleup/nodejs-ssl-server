@@ -265,5 +265,3 @@ async function fileDesc() {
       if (filehandle) await filehandle.close();
     }
   }
-
-  fileDesc()

@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import * as fs from 'fs';
+
 
 dotenv.config();
 
@@ -255,13 +255,3 @@ async function fetchAllData() {
 }
 const fileName = './settings.txt'
 
-async function fileDesc() {
-    let filehandle;
-    try {
-      filehandle = await fs.open(fileName, 'r');
-      console.log(filehandle.fd);
-      console.log(await filehandle.readFile({ encoding: 'utf8' }));
-    } finally {
-      if (filehandle) await filehandle.close();
-    }
-  }

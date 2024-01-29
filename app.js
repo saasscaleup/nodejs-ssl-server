@@ -74,9 +74,6 @@ app.get('/api/status', async (req, res) => {
             globalErrorState = errorState;
         }
     
-        if(settings != {}){
-            console.log('writing file')
-        }
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
         console.log("requestToRun:", globalRequestToRun);
         console.log("errorState:", globalErrorState, "\n");

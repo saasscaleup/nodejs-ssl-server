@@ -79,7 +79,7 @@ app.get('/api/status', async (req, res) => {
         console.log("errorState:", globalErrorState, "\n");
         console.log('settings', settings)
 
-        const result = await readFileSync('settings.txt');
+        const result = await readFileSync('output.txt');
         console.log('File content:', result);
 
 
@@ -260,13 +260,16 @@ import fs from 'fs';
 const writer = fs.createWriteStream('output.txt');
 
 // Create a JavaScript object 'response' with 'name' and 'id' properties
-// const response = {
-//     name: 'John',
-//     id: 1
-// };
+const response = {
+    defaultVoltage: 49.0,
+    defaultRuntime: 30,
+    checkHour: 2100,
+    checkVoltage: 51.8,
+    checkRuntime: 30
+};
 
-// // Write the JSON representation of the 'response' object to the file
-// writer.write(JSON.stringify(response));
+// Write the JSON representation of the 'response' object to the file
+writer.write(JSON.stringify(response));
 
 async function readFileSync(filePath) {
     try {

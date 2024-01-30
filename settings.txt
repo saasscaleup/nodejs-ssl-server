@@ -1,4 +1,1 @@
-hello
-you
-are 
-cute
+{defaultVoltage: '49.0', defaultRuntime: '30', checkHour: '2100', checkVoltage: '51.8', checkRuntime: '30'}

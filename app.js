@@ -264,3 +264,23 @@ const response = {
 
 // Write the JSON representation of the 'response' object to the file
 writer.write(JSON.stringify(response));
+
+function readFileSync(filePath) {
+    try {
+        // Read the file synchronously
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+        // Parse the JSON content
+        const parsedContent = JSON.parse(fileContent);
+
+        return parsedContent;
+    } catch (error) {
+        // Handle errors, e.g., log or throw an exception
+        console.error('Error reading file synchronously:', error);
+        throw error;
+    }
+}
+
+// Example usage
+const result = readFileSync('output.txt');
+console.log('File content:', result);

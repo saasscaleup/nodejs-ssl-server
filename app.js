@@ -250,3 +250,17 @@ async function fetchAllData() {
     }
     
 }
+
+import fs from 'fs';
+
+// Create a write stream to 'output.txt'
+const writer = fs.createWriteStream('output.txt');
+
+// Create a JavaScript object 'response' with 'name' and 'id' properties
+const response = {
+    name: 'John',
+    id: 1
+};
+
+// Write the JSON representation of the 'response' object to the file
+writer.write(JSON.stringify(response));

@@ -3,30 +3,28 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-const fs = require('fs');
 import { promises as fsp } from 'fs';
 
 dotenv.config();
 
 const app = express();
-const hostname = '127.0.0.1'; // Your server ip address
+const hostname = '127.0.0.1';
 const port = 3000;
 const filePath = new URL('./settings.json', import.meta.url).pathname;
 const version = '1.5.0';
 var globalGeneratorRunning = false;
 var globalRequestToRun = false;
 var globalErrorState = false;
-var globalSettings
-
+var globalSettings;
 
 const corsOptions = {
-    origin: '*', // Allow requests from any origin (you can specify your frontend's origin here)
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
     credentials: true,
     allowedHeaders: 'Content-Type',
-  };
-  
+};
+
 app.use(cors(corsOptions));
 
 app.use(rateLimitMiddleware);
@@ -276,19 +274,14 @@ async function fetchAllData() {
 
 async function readFileSync(filePath) {
     try {
-      // Read the file asynchronously
-      const fileContent = await fsp.readFile(filePath, 'utf-8');
-  
-      // Parse the JSON content
-      const parsedContent = JSON.parse(fileContent);
-  
-      return parsedContent;
+        const fileContent = await fsp.readFile(filePath, 'utf-8');
+        const parsedContent = JSON.parse(fileContent);
+        return parsedContent;
     } catch (error) {
-      // Handle errors, e.g., log or throw an exception
-      console.error('Error reading file asynchronously:', error);
-      throw error;
+        console.error('Error reading file asynchronously:', error);
+        throw error;
     }
-  }
+}
 
 // Example usage
 // const result = readFileSync('settings.txt');
@@ -296,10 +289,9 @@ async function readFileSync(filePath) {
 
 async function writeResponseToFile(response) {
     try {
-      // Use fs.promises.writeFile instead of fsp.writeFile
-      await fs.promises.writeFile('output.txt', JSON.stringify(response));
-      console.log('Write to file successful');
+        await fsp.writeFile('output.txt', JSON.stringify(response));
+        console.log('Write to file successful');
     } catch (error) {
-      console.error('Error writing to file:', error.message);
+        console.error('Error writing to file:', error.message);
     }
-  }
+}

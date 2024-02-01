@@ -4,7 +4,7 @@ import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import fs from 'fs';
-const fsp = require('fs').promises;
+import { promises as fsp } from 'fs';
 
 
 dotenv.config();

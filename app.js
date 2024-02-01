@@ -3,16 +3,15 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import fs from 'fs';
+const fs = require('fs');
 import { promises as fsp } from 'fs';
-
 
 dotenv.config();
 
 const app = express();
 const hostname = '127.0.0.1'; // Your server ip address
 const port = 3000;
-const filePath = './settings.json';
+const filePath = new URL('./settings.json', import.meta.url).pathname;
 const version = '1.5.0';
 var globalGeneratorRunning = false;
 var globalRequestToRun = false;

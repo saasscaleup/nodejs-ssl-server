@@ -277,30 +277,30 @@ async function fetchAllData() {
 
 async function readFileSync(filePath) {
     try {
-        // Read the file synchronously
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-
-        // Parse the JSON content
-        const parsedContent = JSON.parse(fileContent);
-
-        return parsedContent;
+      // Read the file asynchronously
+      const fileContent = await fsp.readFile(filePath, 'utf-8');
+  
+      // Parse the JSON content
+      const parsedContent = JSON.parse(fileContent);
+  
+      return parsedContent;
     } catch (error) {
-        // Handle errors, e.g., log or throw an exception
-        console.error('Error reading file synchronously:', error);
-        throw error;
+      // Handle errors, e.g., log or throw an exception
+      console.error('Error reading file asynchronously:', error);
+      throw error;
     }
-}
+  }
 
 // Example usage
 // const result = readFileSync('settings.txt');
 // console.log('File content:', result);
 
 async function writeResponseToFile(response) {
-  try {
-    // Write the JSON representation of the 'response' object to the file
-    await fsp.writeFile('output.txt', JSON.stringify(response));
-    console.log('Write to file successful');
-  } catch (error) {
-    console.error('Error writing to file:', error.message);
+    try {
+      // Use fs.promises.writeFile instead of fsp.writeFile
+      await fs.promises.writeFile('output.txt', JSON.stringify(response));
+      console.log('Write to file successful');
+    } catch (error) {
+      console.error('Error writing to file:', error.message);
+    }
   }
-}

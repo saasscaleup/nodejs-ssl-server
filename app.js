@@ -3,7 +3,9 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import fs from 'fs/promises';
+import fs from 'fs';
+const fsp = require('fs').promises;
+
 
 dotenv.config();
 
@@ -296,7 +298,7 @@ async function readFileSync(filePath) {
 async function writeResponseToFile(response) {
   try {
     // Write the JSON representation of the 'response' object to the file
-    await fs.writeFile('output.txt', JSON.stringify(response));
+    await fsp.writeFile('output.txt', JSON.stringify(response));
     console.log('Write to file successful');
   } catch (error) {
     console.error('Error writing to file:', error.message);

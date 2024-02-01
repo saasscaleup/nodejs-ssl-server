@@ -3,8 +3,7 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import fs from 'fs';
-
+import fs from 'fs/promises';
 
 dotenv.config();
 
@@ -293,8 +292,6 @@ async function readFileSync(filePath) {
 // Example usage
 // const result = readFileSync('settings.txt');
 // console.log('File content:', result);
-
-const fs = require('fs').promises;
 
 async function writeResponseToFile(response) {
   try {

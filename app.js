@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import rateLimitMiddleware from './middlewares/ratelimit.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import fs from 'fs';
 
 
 dotenv.config();
@@ -72,6 +73,10 @@ app.get('/api/status', async (req, res) => {
         }
         if(errorState !== ''){
             globalErrorState = errorState;
+        }
+        if(settings !== null){
+            globalSettings = settings;
+            await writeResponseToFile(settings);
         }
     
         console.log("\ngeneratorRunning:", globalGeneratorRunning);
@@ -254,22 +259,20 @@ async function fetchAllData() {
     
 }
 
-import fs from 'fs';
+// // Create a write stream to 'output.txt'
+// const writer = fs.createWriteStream('output.txt');
 
-// Create a write stream to 'output.txt'
-const writer = fs.createWriteStream('output.txt');
+// // Create a JavaScript object 'response' with 'name' and 'id' properties
+// const response = {
+//     defaultVoltage: 49.0,
+//     defaultRuntime: 30,
+//     checkHour: 2100,
+//     checkVoltage: 51.8,
+//     checkRuntime: 30
+// };
 
-// Create a JavaScript object 'response' with 'name' and 'id' properties
-const response = {
-    defaultVoltage: 49.0,
-    defaultRuntime: 30,
-    checkHour: 2100,
-    checkVoltage: 51.8,
-    checkRuntime: 30
-};
-
-// Write the JSON representation of the 'response' object to the file
-writer.write(JSON.stringify(response));
+// // Write the JSON representation of the 'response' object to the file
+// writer.write(JSON.stringify(response));
 
 async function readFileSync(filePath) {
     try {
@@ -290,3 +293,15 @@ async function readFileSync(filePath) {
 // Example usage
 // const result = readFileSync('settings.txt');
 // console.log('File content:', result);
+
+const fs = require('fs').promises;
+
+async function writeResponseToFile(response) {
+  try {
+    // Write the JSON representation of the 'response' object to the file
+    await fs.writeFile('output.txt', JSON.stringify(response));
+    console.log('Write to file successful');
+  } catch (error) {
+    console.error('Error writing to file:', error.message);
+  }
+}

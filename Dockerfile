@@ -1,6 +1,6 @@
 FROM node:alpine
 
-WORKDIR /nodejs-ci-cd-pipeline
+WORKDIR /nodejs-docker-aws-ecs
 
 COPY package.json .
 

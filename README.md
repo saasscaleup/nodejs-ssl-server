@@ -1,4 +1,4 @@
-# nodejs-ssl-server
+# nodejs-docker-aws-ecs
 
 How to push nodejs app image to AWS ECR and deploy to AWS ECS Fargate
 

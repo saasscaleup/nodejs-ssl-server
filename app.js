@@ -12,6 +12,12 @@ app.get('/', (req, res) => {
 
 })
 
+// Health check
+app.get('/health', (req, res) => {    
+    res.sendStatus(200);
+    console.log(`[Version ${version}]: New request => http://${hostname}:${port}`+req.url);
+})
+
 app.listen(port, () => {
     console.log(`[Version ${version}]: Server running at http://${hostname}:${port}/`);
 })

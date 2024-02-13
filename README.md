@@ -1,11 +1,38 @@
 # nodejs-docker-aws-ecs
 
-How to push nodejs app image to AWS ECR and deploy to AWS ECS Fargate
+AWS Project - CI CD Pipeline to AWS ECS for Docker App + CodeCommit + CodeBuild + CodeDeploy
+Here's the [YouTube Video](https://youtu.be/knFabwOn1JE).
 
 <a href="https://www.buymeacoffee.com/scaleupsaas"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=scaleupsaas&button_colour=BD5FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
 
 
-  
+## Installation
+
+Follow next steps in order to install nodejs app and create a dockerimage
+
+### Step 1 - Git clone 
+
+```
+git clone https://github.com/saasscaleup/nodejs-ssl-server.git
+```
+
+```
+git checkout nodejs-docker-aws-ecs
+```
+
+```
+cd nodejs-ssl-server
+```
+
+### Step 2 - Build and run docker container
+
+```
+docker build -t nodejs-server-demo .
+```
+
+```
+docker run -dp 3000:3000 nodejs-server-demo
+```
   
 ## Support 🙏😃
   

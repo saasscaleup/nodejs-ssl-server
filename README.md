@@ -17,11 +17,11 @@ git clone https://github.com/saasscaleup/nodejs-ssl-server.git
 ```
 
 ```
-git checkout nodejs-docker-aws-ecs
+cd nodejs-ssl-server
 ```
 
 ```
-cd nodejs-ssl-server
+git checkout nodejs-docker-aws-ecs
 ```
 
 ### Step 2 - Build and run docker container
